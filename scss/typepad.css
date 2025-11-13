@@ -270,7 +270,7 @@ tt {
 /*
   Extension
 */
-.unselectable, .logo img, input[type=checkbox] + label.checker, .btn, .btn-group .btn-vertical > * {
+.unselectable, .logo img, input[type=checkbox] + label.checker, .btn, .btn-group .btn-vertical > *, .switch-item .label {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;

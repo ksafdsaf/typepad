@@ -152,6 +152,9 @@ $kbd-text: black;
 
 .switch-item{
   @extend .with-dashline-center;
+  .label{
+    @extend .unselectable;
+  }
 }
 
 .with-dashline-center{

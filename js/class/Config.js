@@ -41,6 +41,9 @@ define(['Article', 'ArticleType'],function (Article, ArticleType) {
                this.isHistoryInListMode  = config.isHistoryInListMode;
                // v2.65
                this.version              = config.version;
+               // v2.69
+               this.isNeedKeepLastScore  = config.isNeedKeepLastScore || false;
+         
             } else {
                // 清除配置，刷新页面
                localStorage.removeItem(CONFIG_NAME)
@@ -49,7 +52,7 @@ define(['Article', 'ArticleType'],function (Article, ArticleType) {
          } else {
             let initChapterAmount = Math.ceil(500 / 15)      // 计算初始段数，非整数时向上取值
 
-            this.version              = 'v2.65'                 // 配置版本号
+            this.version              = 'v2.69'                 // 配置版本号
             this.chapter              = 1;                      // 当前段号
             this.chapterTotal         = initChapterAmount;      // 总段数
             this.isShuffle            = false;                  // 是否乱序模式
@@ -74,6 +77,8 @@ define(['Article', 'ArticleType'],function (Article, ArticleType) {
             this.isBigCharacter       = false;
             // v2.61 新历史记录样式
             this.isHistoryInListMode  = false;
+            // v2.69
+            this.isNeedKeepLastScore  = false;                  // 是否需要保留上次的速度成绩，默认不保留
          }
       }
       save(){

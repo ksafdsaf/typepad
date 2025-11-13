@@ -13,7 +13,7 @@ Roseo Maple Type Pad
 [http://kylebing.cn/tools/typepad/](http://kylebing.cn/tools/typepad/)
 
 ### 2. 本地运行
-直接下载 [源文件](https://github.com/KyleBing/typepad/archive/refs/heads/master.zip)，双击或用浏览器打开 `index.html` 即可本地运行
+直接下载 [源文件](https://github.com/KyleBing/typepad/archive/refs/heads/master.zip)，双击或用浏览器打开 `index.html` 即可本地运行，但这种模式无法保留成绩。
 
 如果你想用来练习英文单词，请下载拥有完整`CET4/6`，`托福`等单词的版本： [v2.58](https://github.com/KyleBing/typepad/releases/tag/v2.58)
 

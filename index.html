@@ -115,6 +115,13 @@
                <label class="switch" for="autoNext"></label>
             </div>
          </div>
+         <div class="switch-item hidden" id="panelKeepLastScore">
+            <div class="label">成绩停留</div>
+            <div class="wrapper">
+               <input id="keepLastScore" type="checkbox" onchange="engine.keepLastScore()">
+               <label class="switch" for="keepLastScore"></label>
+            </div>
+         </div>
          <div class="switch-item">
             <div class="label">重复：当前段</div>
             <div class="wrapper">
@@ -414,7 +421,7 @@
          </div>
          <div class="btn-group">
             <div class="btn" onclick="engine.prevChapter()" title="上一段：⌘ + U 或 F1">《</div>
-            <div class="btn" onclick="engine.nextChapter()" title="下一段：⌘ + J 或 F2">》</div>
+            <div class="btn" onclick="engine.nextChapter(true)" title="下一段：⌘ + J 或 F2">》</div>
          </div>
          <!-- <div class="btn-group">
             <div class="btn" onclick="engine.toTopChapter()" title="至第一段">|《</div>

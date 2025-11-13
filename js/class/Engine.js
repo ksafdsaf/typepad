@@ -138,6 +138,7 @@ define(
          $('input[type=checkbox]#shuffleRepeat').checked = this.config.isShuffleRepeat;
          $('input[type=checkbox]#bigCharacter').checked = this.config.isBigCharacter;
          $('input[type=checkbox]#historyListMode').checked = this.config.isHistoryInListMode;
+         $('input[type=checkbox]#keepLastScore').checked = this.config.isNeedKeepLastScore;
          let radioNodes = document.querySelectorAll('input[name=count][type=radio]');
          let radios = [...radioNodes];
          radios.forEach(item => {
@@ -161,6 +162,13 @@ define(
 
          // Repeat Status
          this.setRepeatStatus(this.config);
+
+         // Keep Last Score
+         if (this.config.isAutoNext) {
+            $('#panelKeepLastScore').classList.remove('hidden');
+         } else {
+            $('#panelKeepLastScore').classList.add('hidden');
+         }
 
          // Dark Mode
          let body = $('body');
@@ -266,7 +274,7 @@ define(
       }
 
       // 下一段
-      nextChapter() {
+      nextChapter(isNeedClearSpeedPanel = true) {
          if (this.config.chapter !== this.config.chapterTotal) {
             if (this.config.articleType === ArticleType.word) // 1. ArticleType.word
             {
@@ -285,7 +293,7 @@ define(
             }
             this.config.repeatCountCurrent = 1;
             this.config.chapter++;
-            this.reset();
+            this.reset(isNeedClearSpeedPanel);
             this.config.save();
          } else {
             console.log('retch chapter bottom')
@@ -516,6 +524,17 @@ define(
       // 自动发文
       autoNext(){
          this.config.isAutoNext = $('#autoNext').checked;
+         if (this.config.isAutoNext){
+            $('#panelKeepLastScore').classList.remove('hidden');
+         } else {
+            $('#panelKeepLastScore').classList.add('hidden');
+         }
+         this.config.save();
+      }
+
+      // 上次成绩停留
+      keepLastScore(){
+         this.config.isNeedKeepLastScore = $('#keepLastScore').checked;
          this.config.save();
       }
 
@@ -882,7 +901,7 @@ define(
       }
 
       // 重置计数器
-      reset() {
+      reset(isNeedClearSpeedPanel = true) {
          this.record = new Record();
          template.innerHTML = this.currentWords;
          this.isPaused = false;
@@ -890,7 +909,7 @@ define(
          this.isFinished = false;
          typingPad.value = '';
          this.keyCount.reset();
-         this.updateInfo();
+         this.updateInfo(isNeedClearSpeedPanel);
          this.stopRefresh();
          this.showTime();
          templateWrapper.scrollTo(0, 0);
@@ -903,6 +922,7 @@ define(
          this.stopRefresh();
          this.timeEnd = (new Date()).getTime();
          this.duration = this.timeEnd - this.timeStart;
+
          // update record
          this.record.backspace = this.keyCount.backspace;
          this.record.timeStart = this.timeStart;
@@ -1019,23 +1039,26 @@ define(
                   if (this.config.isShuffleRepeat){ // 需要重复时乱序
                      this.shuffleCurrent();
                   } else {
-                     this.reset()
+                     this.reset(!this.config.isNeedKeepLastScore)
                   }
                   this.config.repeatCountCurrent++;
                } else {
                   this.config.repeatCountCurrent = 1;
-                  this.nextChapter()
+                  this.nextChapter(!this.config.isNeedKeepLastScore)
                }
             } else {
                this.config.repeatCountCurrent = 1;
-               this.nextChapter();
+               this.nextChapter(!this.config.isNeedKeepLastScore);
             }
+         } else {
+            this.updateInfo();
          }
-         this.updateInfo();
       }
 
       // 更新界面信息
-      updateInfo() {
+      updateInfo(isNeedClearSpeedPanel = true) {
+         // isNeedClearSpeedPanel: 是否需要清除实时速度面板
+         // 为了在自动下一章节时，不刷新实时速度面板，保留上一段结束之后的成绩
          // COLOR 计时器颜色
          if (this.isStarted && !this.isPaused) {
             $('.time').classList.add('text-black');
@@ -1053,16 +1076,18 @@ define(
          // 更新当前重复次数
          $('#repeatCountCurrent').innerText = this.config.repeatCountCurrent
 
-         // SPEED
+         // SPEED PANEL INFO
          if (!this.isStarted && !this.isFinished) {
-            $('.speed-info-pc .speed').innerText               = '--';
-            $('.speed-info-mobile .speed').innerText               = '--';
-            $('.count-key-rate').innerText      = '--';
-            $('.speed-info-mobile .count-key-rate').innerText      = '--';
-            $('.count-key-length').innerText    = '--';
-            $('.speed-info-mobile .count-key-length').innerText    = '--';
-            $('.count-key-backspace').innerText = '--';
-            $('.speed-info-mobile .count-key-backspace').innerText = '--';
+            if (isNeedClearSpeedPanel) {
+               $('.speed-info-pc .speed').innerText                    = '--';
+               $('.speed-info-mobile .speed').innerText                = '--';
+               $('.count-key-rate').innerText                          = '--';
+               $('.speed-info-mobile .count-key-rate').innerText       = '--';
+               $('.count-key-length').innerText                        = '--';
+               $('.speed-info-mobile .count-key-length').innerText     = '--';
+               $('.count-key-backspace').innerText                     = '--';
+               $('.speed-info-mobile .count-key-backspace').innerText  = '--';
+            }
          } else {
             this.record.speed = Number((this.correctWordsCount / this.duration * 1000 * 60).toFixed(2));
             $('.speed-info-pc .speed').innerText = this.record.speed;
