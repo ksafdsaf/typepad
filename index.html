@@ -408,7 +408,7 @@
                <span class="count-current bold current number" title="本段已打字数"></span> / <span class="count-total number total" title="本段总字数"></span>
             </div>
             <div id="totalChapter" class="btn no-action number">
-               <span class="chapter-current bold current number" title="当前段数"></span> /
+               <span class="chapter-current bold current number editable" title="当前段数" contenteditable="true" onkeydown="engine.toChapter(event)"></span> /
                <span class="chapter-total number total" title="总段数"></span>
             </div>
          </div>
@@ -416,10 +416,10 @@
             <div class="btn" onclick="engine.prevChapter()" title="上一段：⌘ + U 或 F1">《</div>
             <div class="btn" onclick="engine.nextChapter()" title="下一段：⌘ + J 或 F2">》</div>
          </div>
-         <div class="btn-group">
+         <!-- <div class="btn-group">
             <div class="btn" onclick="engine.toTopChapter()" title="至第一段">|《</div>
             <div class="btn" onclick="engine.toEndChapter()" title="至最后一段">》|</div>
-         </div>
+         </div> -->
          <div class="btn-group hidden" id="panelRepeatController">
             <div id="repeatMonitor" class="btn no-action number" onclick="engine.reset()" title="⌘ + K">
                <span id="repeatCountCurrent" class="chapter-current bold current number" title="当前重打次数">1</span> /

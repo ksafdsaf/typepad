@@ -320,6 +320,34 @@ define(
          this.nextChapter()
       }
 
+      // 跳转至某段
+      toChapter(keyboardEvent){
+         switch (keyboardEvent.key) {
+            case 'Enter':
+               keyboardEvent.preventDefault()
+               keyboardEvent.target.blur()
+
+               let chapter = Number(keyboardEvent.target.innerText)
+               if (isNaN(chapter)) {
+                  console.log('chapter is not a number')
+                  Utility.shakeDom(keyboardEvent.target)
+                  chapter = 1
+               } else {
+                  chapter = Math.abs(chapter)
+                  if (chapter > this.config.chapterTotal) {
+                     chapter = this.config.chapterTotal
+                  } else if (chapter < 1) {
+                     chapter = 1
+                  }
+                  this.config.chapter = chapter - 1
+                  this.nextChapter()
+               }
+               break
+            default:
+               break
+         }
+      }
+
       // 自定义文章
       customizeArticle(){
          $('#app').style.overflow = 'hidden'
